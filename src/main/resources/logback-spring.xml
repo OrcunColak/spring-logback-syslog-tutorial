@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration debug="false">
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+
+    <springProperty scope="context" name="appName" source="spring.application.name" defaultValue="undefined"/>
+    <property name="LOG_PATTERN" value="date=%d;log-level=%p;app=${appName};thread=%t;trace=%X{traceId},%X{spanId};logger=%logger;message=%m%n%xException"/>
+
+    <appender name="SYSLOG_APPENDER" class="ch.qos.logback.classic.net.SyslogAppender">
+        <syslogHost>localhost</syslogHost>
+        <facility>USER</facility>
+        <port>514</port>
+        <throwableExcluded>true</throwableExcluded>
+        <suffixPattern>${LOG_PATTERN}</suffixPattern>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="SYSLOG_APPENDER" />
+    </root>
+</configuration>
+
